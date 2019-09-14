@@ -164,6 +164,6 @@ public class ParamConfiguration {
 
 }
 ```
-> 当spring容器记载该配置类时，通过 **@PostConstruct** 注解将首先执行**init（）**方法,通过远程请求注册中心api接口，通过sysId与sysName字段查询DB与Redis参数
+> 当spring容器加载完成该配置类时，通过 **@PostConstruct** 注解将首先执行**init（）**方法,通过远程请求注册中心api接口，通过sysId与sysName字段查询DB与Redis参数
 
 > 上述过程实现了客户端动态调用远程中心API进行动态连接数据库进行操作
