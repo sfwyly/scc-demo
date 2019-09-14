@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8">
+        <!DOCTYPE mapper
+                PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+                "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="sysMapper">
+
+
+    <select id="queryParamInfo" parameterType="Map" resultType="Map">
+        select
+            t.id,
+            t.param_key as paramkey,
+            t.param_value as paramvalue
+        from t_scc_param t
+        where t.scc_id = #{SysId}
+         and t.env_name =#{EnvName}
+    </select>
+    <update id="updateParam" parameterType="String">
+        update t_scc_param t
+        set t.param_value = #{ParamValue}
+        where t.id=#{Id}
+    </update>
+
+    <select id="querySysInfo" parameterType="Map" resultType="Map">
+    select
+    t.sys_id as sysid,
+    t.sys_name as sysname
+    from t_scc_system t
+    </select>
+</mapper>

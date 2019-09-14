@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link href = "http://libs.baidu.com/bootstrap/3.0.3/css/bootstrap.min.css" rel="stylesheet">
+    <title>用户登录</title>
+</head>
+<body>
+
+    <div class="container">
+
+        <h2 style="text-align:center"><small>SCC玩具登录页</small></h2>
+        <div class="row">
+            <div class="col-md-6 col-md-offset-3">
+                <div class="form-horizontal">
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">用户名</label>
+                    <div class="col-sm-9">
+                        <input class="form-control" id="username" type="text" placeholder="UserName">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">用户名</label>
+                    <div class="col-sm-9">
+                        <input class="form-control" id="password" type="password" placeholder="Password">
+                    </div>
+                </div>
+
+                    <div class="form-group">
+                        <div class="col-sm-offset-3 col-sm-9">
+                            <button id="loginBtn" class="btn btn-primary btn-block">登录</button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script type="text/javascript" src="https://cdn.bootcss.com/jquery/2.2.4/jquery.js"></script>
+<script type="text/javascript" src="https://libs.baidu.com/bootstrap/3.0.3/js/bootsrtap.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function(){
+
+        $("#loginBtn").click(function(e){
+            var username = $("#username").val()
+            var password = $("#password").val()
+            if(username =="" || password == ""){
+                alert("用户名密码不能为空")
+                return ;
+            }
+            $.ajax({
+                type:"post",
+                url:"http://localhost:8020/login",
+                data:{
+                    "username":username,
+                    "password":password
+                },
+                beforeSend:function(){
+                    $("#loginBtn").css("display","none");
+                },
+                dataType:"json",
+                xhrFields:{withCredentials:true},
+                success:function(data){
+                    console.log(data);
+                    if(data.status=="0"){
+                        //登录成功
+                        window.localStorage["scctoken"] = data.data.token;
+
+                        //跳转
+                        parent.document.location.href="index.html";
+                    }else if(data.status=="1"){
+                        //登录失败
+                        alert(data.errMsg);
+                    }else if(data.status=="2"){
+                        //重新登录
+                        alert(data.errMsg);
+                        parent.document.location.href="login.html";
+                    }
+                },
+                error:function(XMLHttpRequest,textStatus,thrownError){
+
+                },
+                complete:function(data){
+                    $("#loginBtn").css("display","block");
+                }
+            });
+        });
+    });
+</script>
+</html>
